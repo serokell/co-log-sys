@@ -1,0 +1,28 @@
+resolver: lts-12.16
+
+packages:
+- .
+
+extra-deps:
+- universum-1.5.0
+# Required by lootbox
+- base-noprelude-4.11.1.0
+
+# Required by co-log and co-log-core
+- contravariant-1.5
+- relude-0.3.0
+- typerep-map-0.3.0
+- primitive-0.6.4.0
+
+- fmt-0.6.1
+
+- git: https://github.com/serokell/lootbox
+  commit: 58fbcddb5dacafa7d4c9717fd171e8546442f7a2
+  subdirs:
+  - code/prelude
+
+- git: https://github.com/kowainik/co-log.git
+  commit: 41cc915e42628c9cc4eea28db2ecdf11bd0e413e
+  subdirs:
+  - co-log-core
+  - co-log

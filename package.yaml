@@ -1,0 +1,77 @@
+name:                co-log-sys
+version:             0.1.0.0
+github:              serokell/co-log-sys
+license:             MPL-2.0
+license-file:        LICENSE.md
+author:              Serokell
+maintainer:          Serokell <hi@serokell.io>
+copyright:           2018 Serokell
+
+extra-source-files:
+- README.md
+
+synopsis:            Syslog implementation on top of 'co-log-core'
+category:            Logging
+
+description:         Please see the README on GitHub at <https://github.com/serokell/co-log-sys#readme>
+homepage:            'https://github.com/serokell/co-log-sys#readme'
+bug-reports:         https://github.com/serokell/co-log-sys/issues
+
+dependencies:
+- base-noprelude >= 4.7 && < 5
+- loot-prelude
+- universum
+
+- co-log
+- co-log-core
+
+- aeson
+- ansi-terminal
+- fmt
+- microlens
+- network
+- unix
+
+library:
+  source-dirs: src
+
+tests:
+  co-log-sys-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - co-log-sys
+
+default-extensions:
+- ApplicativeDo
+- BangPatterns
+- LambdaCase
+- MultiWayIf
+- NegativeLiterals
+- OverloadedLabels
+- OverloadedStrings
+- PatternSynonyms
+- PolyKinds
+- RankNTypes
+- RecordWildCards
+- RecursiveDo
+- StandaloneDeriving
+- TupleSections
+
+ghc-options:
+- -Weverything
+- -Wno-missing-exported-signatures
+- -Wno-missing-import-lists
+- -Wno-missed-specialisations
+- -Wno-all-missed-specialisations
+- -Wno-unsafe
+- -Wno-safe
+- -Wno-missing-local-signatures
+- -Wno-monomorphism-restriction
+- -Wno-implicit-prelude
+- -Wno-orphans
+- -Werror
