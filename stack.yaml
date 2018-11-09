@@ -11,8 +11,6 @@ extra-deps:
 # Required by co-log and co-log-core
 - contravariant-1.5
 - relude-0.3.0
-- typerep-map-0.3.0
-- primitive-0.6.4.0
 
 - fmt-0.6.1
 
@@ -25,4 +23,3 @@ extra-deps:
   commit: 41cc915e42628c9cc4eea28db2ecdf11bd0e413e
   subdirs:
   - co-log-core
-  - co-log

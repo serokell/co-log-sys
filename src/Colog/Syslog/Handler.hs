@@ -1,23 +1,25 @@
 module Colog.Syslog.Handler
-       ( SyslogHandler
+       ( SyslogHandler (shClose)
        , mkSyslogHandler
        , withSyslog
+       , withSyslogGeneric
        , logSyslogMessage
        ) where
 
 import Colog.Core.Action (LogAction (..))
 
-import Colog.Syslog.Config
-import Colog.Syslog.Message
-import Colog.Syslog.Priority
-
-import System.Info (os)
+import Colog.Syslog.Config (SyslogConfig (..), Collector (..))
+import Colog.Syslog.Message (Message (..))
+import Colog.Syslog.Priority (Priority (..))
 
 import Control.Exception (IOException)
 import Network.Socket hiding (send, sendTo, recv, recvFrom)
 import Network.Socket.ByteString
+import System.Info (os)
 import System.Posix.Process (getProcessID)
 import Fmt ((+|), (|+), (|++|), (+||), (||+))
+
+import Control.Monad.Trans.Control (MonadBaseControl, liftBaseOp)
 
 -- | An Handler for Syslog connections
 data SyslogHandler = SyslogHandler
@@ -49,7 +51,7 @@ openSyslogSocket = \case
         | onWindows -> openSyslogSocket $ Remote AF_INET "localhost" 514
         | onMacOs   -> openSyslogSocket $ Local "/var/run/syslog"
         | otherwise -> openSyslogSocket $ Local "/dev/log"
-    Local path -> if 
+    Local path -> if
         | onWindows -> fail "Local is not supported on Windows, you'll \
                             \probably want to use AutoLocal instead"
         | otherwise -> do
@@ -77,6 +79,11 @@ openSyslogSocket = \case
 -- | Uses continuation-passing style for Syslog, similar to 'withFile' with 'Handle's
 withSyslog :: SyslogConfig -> (SyslogHandler -> IO r) -> IO r
 withSyslog config = bracket (mkSyslogHandler config) shClose
+
+-- | Like 'withSyslog', but without the IO restriction on the continuation
+-- function. NOTE: this allows more flexibility, but may also be slower
+withSyslogGeneric :: MonadBaseControl IO m => SyslogConfig -> (SyslogHandler -> m r) -> m r
+withSyslogGeneric config = liftBaseOp (bracket (mkSyslogHandler config) shClose)
 
 -- | Uses a 'SyslogHandler' to make a 'LogAction' that logs 'Message's
 logSyslogMessage :: MonadIO m => SyslogHandler -> LogAction m Message

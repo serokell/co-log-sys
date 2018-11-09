@@ -22,13 +22,14 @@ dependencies:
 - loot-prelude
 - universum
 
-- co-log
 - co-log-core
 
 - aeson
 - ansi-terminal
 - fmt
 - microlens
+- monad-control
+- mtl
 - network
 - unix
 
@@ -49,6 +50,7 @@ tests:
 default-extensions:
 - ApplicativeDo
 - BangPatterns
+- FlexibleContexts
 - LambdaCase
 - MultiWayIf
 - NegativeLiterals

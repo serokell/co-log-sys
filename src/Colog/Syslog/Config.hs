@@ -11,17 +11,17 @@ module Colog.Syslog.Config
 
 import Colog.Syslog.Priority (Facility (..))
 
-import Data.Aeson (FromJSON(..), ToJSON(..), Value (..), withText, withObject, 
+import Data.Aeson (FromJSON(..), ToJSON(..), Value (..), withText, withObject,
     withScientific, (.:), (.:?), (.!=), (.=), object)
+import Fmt ((+|), (|+))
 import Network.Socket (Family (..), HostName, PortNumber)
-import Text.Read (read)
 
 -- | Configuration for Syslog
 data SyslogConfig = SyslogConfig
     { collector :: !Collector -- ^ Where the messages will be delivered
     , facility  :: !Facility  -- ^ Indicates the sending process type
     , appName   :: !Text      -- ^ A name to recognize the sending application
-    }
+    } deriving (Show, Read, Eq)
 
 instance FromJSON SyslogConfig where
     parseJSON = withObject "SyslogConfig" $ \v -> SyslogConfig
@@ -44,7 +44,7 @@ data Collector
         Family     -- ^ Network Address family (usually AF_INET or AF_INET6)
         HostName   -- ^ Remote hostname (can also be localhost)
         PortNumber -- ^ Port number, for syslog is usually 514
-    deriving Show
+    deriving (Show, Read, Eq)
 
 instance FromJSON Collector where
     parseJSON = withObject "Collector" $ \v -> do
@@ -77,7 +77,8 @@ instance ToJSON Collector where
 
 -- Orphan Instances
 instance FromJSON Family where
-    parseJSON = withText "Family" $ pure . read . toString
+    parseJSON = withText "Family" $ \t ->
+        maybe (fail $ "Unknown Family: \""+|t|+"\"") pure . readMaybe $ toString t
 
 instance ToJSON Family where
     toJSON = String . show

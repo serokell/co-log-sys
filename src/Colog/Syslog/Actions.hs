@@ -1,19 +1,16 @@
 module Colog.Syslog.Actions
        ( -- * Syslog actions
          withLogMessageSyslog
-         -- * 'Message' actions
-       , logMessageStdout
-       , logMessageStderr
-       , logMessageHandle
-       , withLogMessageFile
+       , withLogMessageSyslogGeneric
        ) where
 
-import Colog.Actions (logTextStdout, logTextStderr, logTextHandle, withLogTextFile)
-import Colog.Core.Action (LogAction (..), cmap)
+import Colog.Core.Action (LogAction (..))
 
-import Colog.Syslog.Config (SyslogConfig)
-import Colog.Syslog.Handler (withSyslog, logSyslogMessage)
-import Colog.Syslog.Message (Message, fmtMessageColored, fmtMessageFlat)
+import Colog.Syslog.Config
+import Colog.Syslog.Handler 
+import Colog.Syslog.Message
+
+import Control.Monad.Trans.Control (MonadBaseControl)
 
 -- | Sends a log using Syslog, implemented using continuation-passing style
 -- (like for printing on file) because it's more efficient to open the connection
@@ -21,18 +18,11 @@ import Colog.Syslog.Message (Message, fmtMessageColored, fmtMessageFlat)
 withLogMessageSyslog :: MonadIO m => SyslogConfig -> (LogAction m Message -> IO r) -> IO r
 withLogMessageSyslog config action = withSyslog config $ action . logSyslogMessage
 
--- | 'LogAction' to print a colored 'Message' to stdout
-logMessageStdout :: MonadIO m => LogAction m Message
-logMessageStdout = cmap fmtMessageColored logTextStdout
-
--- | 'LogAction' to print a colored 'Message' to stderr
-logMessageStderr :: MonadIO m => LogAction m Message
-logMessageStderr = cmap fmtMessageColored logTextStderr
-
--- | 'LogAction' to print a colored 'Message' to an 'Handle'
-logMessageHandle :: MonadIO m => Handle -> LogAction m Message
-logMessageHandle handle = cmap fmtMessageColored $ logTextHandle handle
-
--- | 'LogAction' to print a colored 'Message' to a file, using continuation-passing style
-withLogMessageFile :: MonadIO m => FilePath -> (LogAction m Message -> IO r) -> IO r
-withLogMessageFile path action = withLogTextFile path $ action . cmap fmtMessageFlat
+-- | Like 'withLogMessageSyslog', but without the IO restriction on the continuation
+-- function. NOTE: this allows more flexibility, but may also be slower
+withLogMessageSyslogGeneric
+    :: (MonadBaseControl IO n, MonadIO m)
+    => SyslogConfig
+    -> (LogAction m Message -> n r) -> n r
+withLogMessageSyslogGeneric config action = withSyslogGeneric config $
+    action . logSyslogMessage

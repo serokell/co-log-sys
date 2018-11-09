@@ -10,11 +10,10 @@ module Colog.Syslog.Priority
        , facilityCode
        ) where
 
-import Data.Aeson (FromJSON(..), ToJSON(..), Value (..), withText, withObject, 
+import Data.Aeson (FromJSON(..), ToJSON(..), Value (..), withText, withObject,
     (.:), (.=), object)
 import Data.Bits ((.|.), shiftL)
 import Fmt (Buildable (build), fmt, (+|), (|+))
-import Text.Read (read)
 import Text.Show (Show (show))
 
 -- | Represents the priority of a syslog message, as per RFC5424
@@ -54,7 +53,12 @@ data Severity
     | Notice     -- ^ Normal but significant condition
     | Info       -- ^ Informational messages
     | Debug      -- ^ Debug-level messages
-    deriving (Eq, Ord, Show, Read, Bounded, Enum)
+    deriving (Eq, Show, Read, Bounded, Enum)
+
+-- | 'Ord' instance uses the 'Enum' instance reversed, so Severities can be
+-- ordered correctly and 'Enum' can give us the right 'severityCode'
+instance Ord Severity where
+    compare l r = compare (fromEnum r) (fromEnum l)
 
 instance Buildable Severity where
     build = \case
@@ -68,7 +72,8 @@ instance Buildable Severity where
         Debug     -> "[Debug]     "
 
 instance FromJSON Severity where
-    parseJSON = withText "Severity" $ pure . read . toString
+    parseJSON = withText "Severity" $ \t ->
+        maybe (fail $ "Unknown Severity: \""+|t|+"\"") pure . readMaybe $ toString t
 
 instance ToJSON Severity where
     toJSON = String . Prelude.show
@@ -107,7 +112,8 @@ data Facility
     deriving (Eq, Show, Read, Bounded, Enum)
 
 instance FromJSON Facility where
-    parseJSON = withText "Facility" $ pure . read . toString
+    parseJSON = withText "Facility" $ \t ->
+        maybe (fail $ "Unknown Facility: \""+|t|+"\"") pure . readMaybe $ toString t
 
 instance ToJSON Facility where
     toJSON = String . Prelude.show
