@@ -40,10 +40,11 @@ instance ToJSON SyslogConfig where
 data Collector
     = AutoLocal    -- ^ Automatic local syslog destination
     | Local String -- ^ Path to local Unix FIFO. Not supported under Windows.
-    | Remote
-        Family     -- ^ Network Address family (usually AF_INET or AF_INET6)
-        HostName   -- ^ Remote hostname (can also be localhost)
-        PortNumber -- ^ Port number, for syslog is usually 514
+    | Remote Family HostName PortNumber
+    -- ^ Remote server, it's made of:
+    --     * Network Address 'Family' (usually AF_INET or AF_INET6)
+    --     * Remote 'HostName' (can also be localhost)
+    --     * 'PortNumber', for syslog is usually 514
     deriving (Show, Read, Eq)
 
 instance FromJSON Collector where
