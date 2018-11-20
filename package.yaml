@@ -1,5 +1,5 @@
 name:                co-log-sys
-version:             0.1.0.0
+version:             0.1.1.0
 github:              serokell/co-log-sys
 license:             MPL-2.0
 license-file:        LICENSE.md
@@ -18,8 +18,7 @@ homepage:            'https://github.com/serokell/co-log-sys#readme'
 bug-reports:         https://github.com/serokell/co-log-sys/issues
 
 dependencies:
-- base-noprelude >= 4.7 && < 5
-- loot-prelude
+- base >= 4.7 && < 5
 - universum
 
 - co-log-core
@@ -62,6 +61,7 @@ default-extensions:
 - RecursiveDo
 - StandaloneDeriving
 - TupleSections
+- NoImplicitPrelude
 
 ghc-options:
 - -Weverything
@@ -75,4 +75,3 @@ ghc-options:
 - -Wno-monomorphism-restriction
 - -Wno-implicit-prelude
 - -Wno-orphans
-- -Werror

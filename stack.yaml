@@ -5,21 +5,11 @@ packages:
 
 extra-deps:
 - universum-1.5.0
-# Required by lootbox
-- base-noprelude-4.11.1.0
 
-# Required by co-log and co-log-core
+# Required by co-log-core
 - contravariant-1.5
 - relude-0.3.0
 
+- co-log-core-0.1.1
+
 - fmt-0.6.1
-
-- git: https://github.com/serokell/lootbox
-  commit: 58fbcddb5dacafa7d4c9717fd171e8546442f7a2
-  subdirs:
-  - code/prelude
-
-- git: https://github.com/kowainik/co-log.git
-  commit: 41cc915e42628c9cc4eea28db2ecdf11bd0e413e
-  subdirs:
-  - co-log-core

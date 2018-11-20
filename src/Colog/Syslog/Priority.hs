@@ -10,6 +10,8 @@ module Colog.Syslog.Priority
        , facilityCode
        ) where
 
+import Universum
+
 import Data.Aeson (FromJSON(..), ToJSON(..), Value (..), withText, withObject,
     (.:), (.=), object)
 import Data.Bits ((.|.), shiftL)
@@ -76,7 +78,7 @@ instance FromJSON Severity where
         maybe (fail $ "Unknown Severity: \""+|t|+"\"") pure . readMaybe $ toString t
 
 instance ToJSON Severity where
-    toJSON = String . Prelude.show
+    toJSON = String . Universum.show
 
 -- | Numerical code for a 'Severity'. Used to calculate the 'priorityValue'.
 severityCode :: Severity -> Int
@@ -116,7 +118,7 @@ instance FromJSON Facility where
         maybe (fail $ "Unknown Facility: \""+|t|+"\"") pure . readMaybe $ toString t
 
 instance ToJSON Facility where
-    toJSON = String . Prelude.show
+    toJSON = String . Universum.show
 
 -- | Numerical code for a 'Facility'. Used to calculate the 'priorityValue'.
 facilityCode :: Facility -> Int
