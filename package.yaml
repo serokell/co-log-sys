@@ -25,7 +25,6 @@ dependencies:
 - co-log-core
 
 - aeson
-- ansi-terminal
 - fmt
 - microlens
 - monad-control
