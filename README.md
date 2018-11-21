@@ -38,6 +38,6 @@ If you'd like to contribute or file a Bug Report, please read our [Contributors 
 
 ## About Serokell [↑](#co-log-sys)
 
-`co-log-sys` is maintained by [Serokell](https://serokell.io/).
-We love open source software.
-See which [services](https://serokell.io/#services) we provide and [drop us a line](mailto:hi@serokell.io) if you are interested.
+`co-log-sys` is maintained and funded with :heart: by [Serokell](https://serokell.io/). The names and logo for Serokell are trademark of Serokell OÜ.
+
+We love open source software! See [our other projects](https://serokell.io/community?utm_source=github) or [hire us](https://serokell.io/hire-us?utm_source=github) to design, develop and grow your idea!
