@@ -1,9 +1,3 @@
--- This file has been generated from package.yaml by hpack version 0.28.2.
---
--- see: https://github.com/sol/hpack
---
--- hash: b9f31bbf78b5bd510264b1fda2cff94877ad093c3cc231ee5b9acb62f313978a
-
 name:           co-log-sys
 version:        0.1.1.0
 synopsis:       Syslog implementation on top of 'co-log-core'
