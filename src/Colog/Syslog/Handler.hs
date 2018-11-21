@@ -6,6 +6,8 @@ module Colog.Syslog.Handler
        , logSyslogMessage
        ) where
 
+import Universum
+
 import Colog.Core.Action (LogAction (..))
 
 import Colog.Syslog.Config (SyslogConfig (..), Collector (..))

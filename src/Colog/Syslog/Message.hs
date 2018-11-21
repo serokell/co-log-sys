@@ -8,6 +8,8 @@ module Colog.Syslog.Message
        , fmtMessageFlat
        ) where
 
+import Universum
+
 import Colog.Syslog.Priority (Severity(..))
 
 import Fmt ((|+), (|++|))

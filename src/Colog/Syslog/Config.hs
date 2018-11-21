@@ -9,6 +9,8 @@ module Colog.Syslog.Config
        , PortNumber
        ) where
 
+import Universum
+
 import Colog.Syslog.Priority (Facility (..))
 
 import Data.Aeson (FromJSON(..), ToJSON(..), Value (..), withText, withObject,
@@ -42,9 +44,9 @@ data Collector
     | Local String -- ^ Path to local Unix FIFO. Not supported under Windows.
     | Remote Family HostName PortNumber
     -- ^ Remote server, it's made of:
-    --     * Network Address 'Family' (usually AF_INET or AF_INET6)
-    --     * Remote 'HostName' (can also be localhost)
-    --     * 'PortNumber', for syslog is usually 514
+    -- Network Address 'Family' (usually AF_INET or AF_INET6)
+    -- , remote 'HostName' (can also be localhost)
+    -- and 'PortNumber' (usually 514 for syslog)
     deriving (Show, Read, Eq)
 
 instance FromJSON Collector where

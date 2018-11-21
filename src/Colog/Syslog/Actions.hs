@@ -4,6 +4,8 @@ module Colog.Syslog.Actions
        , withLogMessageSyslogGeneric
        ) where
 
+import Universum
+
 import Colog.Core.Action (LogAction (..))
 
 import Colog.Syslog.Config
