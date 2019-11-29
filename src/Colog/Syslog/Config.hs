@@ -9,14 +9,14 @@ module Colog.Syslog.Config
        , PortNumber
        ) where
 
-import Universum
-
 import Colog.Syslog.Priority (Facility (..))
 
 import Data.Aeson (FromJSON(..), ToJSON(..), Value (..), withText, withObject,
     withScientific, (.:), (.:?), (.!=), (.=), object)
+import Data.Text (Text, pack, unpack)
 import Fmt ((+|), (|+))
 import Network.Socket (Family (..), HostName, PortNumber)
+import Text.Read (readMaybe)
 
 -- | Configuration for Syslog
 data SyslogConfig = SyslogConfig
@@ -81,10 +81,10 @@ instance ToJSON Collector where
 -- Orphan Instances
 instance FromJSON Family where
     parseJSON = withText "Family" $ \t ->
-        maybe (fail $ "Unknown Family: \""+|t|+"\"") pure . readMaybe $ toString t
+        maybe (fail $ "Unknown Family: \""+|t|+"\"") pure . readMaybe $ unpack t
 
 instance ToJSON Family where
-    toJSON = String . show
+    toJSON = String . pack . show
 
 instance FromJSON PortNumber where
     parseJSON = withScientific "PortNumber" $ pure . round
