@@ -8,10 +8,9 @@ module Colog.Syslog.Message
        , fmtMessageFlat
        ) where
 
-import Universum
-
 import Colog.Syslog.Priority (Severity(..))
 
+import Data.Text (Text)
 import Fmt ((|+), (|++|))
 import Lens.Micro (Lens', lens)
 

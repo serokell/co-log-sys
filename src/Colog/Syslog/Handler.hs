@@ -6,15 +6,17 @@ module Colog.Syslog.Handler
        , logSyslogMessage
        ) where
 
-import Universum
-
 import Colog.Core.Action (LogAction (..))
 
 import Colog.Syslog.Config (SyslogConfig (..), Collector (..))
 import Colog.Syslog.Message (Message (..))
 import Colog.Syslog.Priority (Priority (..))
 
-import Control.Exception (IOException)
+import Control.Exception (IOException, bracket, try)
+import Control.Monad (void)
+import Control.Monad.IO.Class
+import Data.Text (Text)
+import Data.Text.Encoding (encodeUtf8)
 import Network.Socket hiding (send, sendTo, recv, recvFrom)
 import Network.Socket.ByteString
 import System.Info (os)

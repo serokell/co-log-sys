@@ -4,13 +4,13 @@ module Colog.Syslog.Actions
        , withLogMessageSyslogGeneric
        ) where
 
-import Universum
-
 import Colog.Core.Action (LogAction (..))
 
 import Colog.Syslog.Config
-import Colog.Syslog.Handler 
+import Colog.Syslog.Handler
 import Colog.Syslog.Message
+
+import Control.Monad.IO.Class
 
 import Control.Monad.Trans.Control (MonadBaseControl)
 

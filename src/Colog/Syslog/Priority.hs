@@ -10,13 +10,12 @@ module Colog.Syslog.Priority
        , facilityCode
        ) where
 
-import Universum
-
 import Data.Aeson (FromJSON(..), ToJSON(..), Value (..), withText, withObject,
     (.:), (.=), object)
 import Data.Bits ((.|.), shiftL)
+import Data.Text (pack, unpack)
 import Fmt (Buildable (build), fmt, (+|), (|+))
-import Text.Show (Show (show))
+import Text.Read (readMaybe)
 
 -- | Represents the priority of a syslog message, as per RFC5424
 data Priority = Priority Facility Severity
@@ -75,10 +74,10 @@ instance Buildable Severity where
 
 instance FromJSON Severity where
     parseJSON = withText "Severity" $ \t ->
-        maybe (fail $ "Unknown Severity: \""+|t|+"\"") pure . readMaybe $ toString t
+        maybe (fail $ "Unknown Severity: \""+|t|+"\"") pure . readMaybe $ unpack t
 
 instance ToJSON Severity where
-    toJSON = String . Universum.show
+    toJSON = String . pack . show
 
 -- | Numerical code for a 'Severity'. Used to calculate the 'priorityValue'.
 severityCode :: Severity -> Int
@@ -115,10 +114,10 @@ data Facility
 
 instance FromJSON Facility where
     parseJSON = withText "Facility" $ \t ->
-        maybe (fail $ "Unknown Facility: \""+|t|+"\"") pure . readMaybe $ toString t
+        maybe (fail $ "Unknown Facility: \""+|t|+"\"") pure . readMaybe $ unpack t
 
 instance ToJSON Facility where
-    toJSON = String . Universum.show
+    toJSON = String . pack . show
 
 -- | Numerical code for a 'Facility'. Used to calculate the 'priorityValue'.
 facilityCode :: Facility -> Int
